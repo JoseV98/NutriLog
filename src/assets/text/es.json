@@ -1,0 +1,27 @@
+{
+  "login": {
+    "title": "Bienvenido a Nutrilog",
+    "login": "Inicio de Sesion",
+    "register": "Registrarse",
+    "email": "Ingrese su Correo Electronico",
+    "pass": "Ingrese su Contraseña",
+    "check_pass": "Ingrese de nuevo su Contraseña",
+    "sign_in_button": "Iniciar Sesión",
+    "sign_in_link": "Ya tengo una cuenta",
+    "sign_up_button": "Crear Cuenta",
+    "sign_up_link": "No tengo una cuenta",
+    "wrong_credentials": "Correo y/o contraseña incorrecta",
+    "used_email": "Correo ya usado",
+    "success_register": "Registro exitoso.\nRedirigiendo al inicio",
+    "success_login": "Inicio de Sesión Exitoso.\nRedirigiendo al inicio"
+  },
+  "unvalid_field_messages": {
+    "unmatch_password": "Las contraseñas no coinciden",
+    "unvalid_password": "La contraseña debe tener:\nUna letra MAYÚSCULA\nUna letra minúscula\nUn número\nUn caracter especial",
+    "email_error": "El correo no es valido"
+  },
+  "errors": {
+    "register": "Error: Hubo un error desconocido al registrarse. Por favor notifiquelo al soporte",
+    "general": "ERROR. Notifique con urgencia al soporte"
+  }
+}
