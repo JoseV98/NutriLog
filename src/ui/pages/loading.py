@@ -10,7 +10,7 @@ def LoadingView():
             ft.Container(
                 content=ft.Column(
                     [
-                        ft.ProgressRing(),  # Indicador de carga circular
+                        ft.ProgressRing(),
                         ft.Text("Cargando datos, por favor espera..."),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,

@@ -51,3 +51,5 @@ DB = DatabaseConst()
 # Regex
 NO_SPACE = r"^\S*$"
 EMAIL_FORMAT = r"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+NUMERIC_FORMAT = r"^(?:[0-9]+(?:\.[0-9]+)?)?$"
+NUMERIC_VALUE = r"^[0-9\.]*$"

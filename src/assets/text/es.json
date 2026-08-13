@@ -3,6 +3,7 @@
     "title": "Bienvenido a Nutrilog",
     "login": "Inicio de Sesion",
     "register": "Registrarse",
+    "name": "Ingrese su Nombre",
     "email": "Ingrese su Correo Electronico",
     "pass": "Ingrese su Contraseña",
     "check_pass": "Ingrese de nuevo su Contraseña",
@@ -18,10 +19,72 @@
   "unvalid_field_messages": {
     "unmatch_password": "Las contraseñas no coinciden",
     "unvalid_password": "La contraseña debe tener:\nUna letra MAYÚSCULA\nUna letra minúscula\nUn número\nUn caracter especial",
-    "email_error": "El correo no es valido"
+    "email_error": "El correo no es valido",
+    "format_error": "Formato erroneo"
   },
   "errors": {
     "register": "Error: Hubo un error desconocido al registrarse. Por favor notifiquelo al soporte",
     "general": "ERROR. Notifique con urgencia al soporte"
+  },
+  "appbar": {
+    "new": "Nuevo Paciente",
+    "log": "Registros"
+  },
+  "general": {
+    "number_placeholder": "0.00",
+    "toggle": "Mostrar"
+  },
+  "home": {
+    "appbar_title": "Inicio",
+    "title": "Registro de Pacientes de Nutrición de",
+    "new_patient": "Nuevo Paciente",
+    "patients": "Lista de Pacientes",
+    "search": "Busqueda de Paciente"
+  },
+  "new_patient": {
+    "title": "Datos del Nuevo Paciente",
+    "name": "Nombre del Paciente",
+    "lastname": "Apellido del Paciente",
+    "birthday": "Fecha de Nacimiento",
+    "sex": "Sexo del Paciente",
+    "potential": "¿Guardar Potencial Genético?",
+    "mother": "Talla Madre (m)",
+    "father": "Talla Padre (m)",
+    "is_disease": "¿Enfermedades?",
+    "disease": "Registro de emfermedades del paciente",
+    "is_exam": "¿Examenes?",
+    "exam": "Registro de examenes del paciente",
+    "summit": "Registar Nuevo Paciente"
+  },
+  "patients": {
+    "appbar_title": "Pacientes",
+    "title": "Lista de Pacientes",
+    "no_patients": "No hay Pacientes",
+    "name": "Nombre",
+    "lastname": "Apellido",
+    "age": "Edad",
+    "sex": "Sexo",
+    "loading": "Cargando lista de pacientes"
+  },
+  "data": {
+    "sex_m": "Masculino",
+    "sex_f": "Femenino"
+  },
+  "patient_data": {
+    "title": "Datos de ",
+    "loading": "Cargando Datos del paciente",
+    "default_name": "No encontrado",
+    "edit": "Editar Datos Basicos",
+    "add_data": "Nuevos Datos Antropométricos",
+    "add_report": "Nuevo reporte",
+    "main_data": "Datos Basicos",
+    "fullname": "Nombre Completo",
+    "age": "Edad",
+    "sex": "Sexo",
+    "exam": "Ultimo Reporte Médico Registrado.\nFecha:",
+    "disease": "Ultimo Reporte de Enfermedad Registrado.\nFecha:"
+  },
+  "patient_new_data": {
+    "title": "Nuevos datos antropométricos de "
   }
 }

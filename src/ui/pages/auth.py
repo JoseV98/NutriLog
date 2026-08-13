@@ -11,6 +11,7 @@ from ui.components.buttons import FormButton
 from ui.components.input import InputPass, InputText
 from ui.components.show import SuccessWrongText
 from ui.components.text import SubTitle, Title
+from ui.go_to import go_to_home, go_to_login, go_to_register
 
 
 @ft.component
@@ -22,6 +23,7 @@ def SignLayout():
         route=ft.use_view_path(),
         controls=[
             ft.Container(
+                expand=True,
                 padding=50,
                 bgcolor=ft.Colors.WHITE,
                 border_radius=10,
@@ -31,6 +33,7 @@ def SignLayout():
                     color=ft.Colors.GREY_300,
                 ),
                 content=ft.Column(
+                    expand=True,
                     spacing=20,
                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[Title(user.text["login"]["title"]), outlet],
@@ -48,11 +51,9 @@ def SignLayout():
 def LoginPage():
 
     user = ft.use_context(UserContext)
-    email_ref = ft.Ref[ft.TextField]()
-    pass_ref = ft.Ref[ft.TextField]()
 
-    is_email_valid, set_email_valid = ft.use_state(False)
-    is_pass_valid, set_pass_valid = ft.use_state(False)
+    email_value, set_email_value = ft.use_state("")
+    pass_value, set_pass_value = ft.use_state("")
 
     wrong_login, set_wrong = ft.use_state("")
     loading, set_loading = ft.use_state(False)
@@ -62,9 +63,6 @@ def LoginPage():
 
         set_loading(True)
 
-        email_value = email_ref.current.value if email_ref.current else ""
-        pass_value = pass_ref.current.value if pass_ref.current else ""
-
         try:
             result = await asyncio.to_thread(db_login, email_value, pass_value)
 
@@ -72,7 +70,7 @@ def LoginPage():
 
             await user.save_logged(result)
 
-            ft.context.page.navigate("/")
+            go_to_home()
 
         except AuthApiError as e:
             if re.fullmatch(e.message, "Invalid login credentials"):
@@ -92,27 +90,22 @@ def LoginPage():
             InputText(
                 label=user.text["login"]["email"],
                 placeholder="email@email.com",
-                ref=email_ref,
-                valid_data=set_email_valid,
+                set_input_data=set_email_value,
                 filter=ft.InputFilter(NO_SPACE, allow=False),
                 validate_regex=EMAIL_FORMAT,
                 error_message=user.text["unvalid_field_messages"]["email_error"],
             ),
-            InputPass(
-                label=user.text["login"]["pass"],
-                ref=pass_ref,
-                valid_data=set_pass_valid,
-            ),
+            InputPass(label=user.text["login"]["pass"], set_input_pass=set_pass_value),
             SuccessWrongText(wrong=wrong_login, success=success_login),
             FormButton(
                 label=user.text["login"]["sign_in_button"],
-                is_enabled=is_email_valid and is_pass_valid,
+                is_enabled=bool(email_value) and bool(pass_value),
                 on_click=sign_in,
                 loading=loading,
             ),
             ft.TextButton(
                 content=user.text["login"]["sign_up_link"],
-                on_click=lambda: ft.context.page.navigate("/auth/register"),
+                on_click=lambda: go_to_register(),
                 style=ft.ButtonStyle(color=ft.Colors.BLUE_500),
             ),
         ],
@@ -123,11 +116,10 @@ def LoginPage():
 def RegisterPage():
 
     user = ft.use_context(UserContext)
-    email_ref = ft.Ref[ft.TextField]()
-    pass_ref = ft.Ref[ft.TextField]()
 
-    is_email_valid, set_email_valid = ft.use_state(False)
-    is_pass_valid, set_pass_valid = ft.use_state(False)
+    name_value, set_name_value = ft.use_state("")
+    email_value, set_email_value = ft.use_state("")
+    pass_value, set_pass_value = ft.use_state("")
 
     wrong_register, set_wrong = ft.use_state("")
     loading, set_loading = ft.use_state(False)
@@ -136,17 +128,16 @@ def RegisterPage():
     async def sign_up():
         set_loading(True)
 
-        email_value = email_ref.current.value if email_ref.current else ""
-        pass_value = pass_ref.current.value if pass_ref.current else ""
-
         try:
-            result = await asyncio.to_thread(db_register, email_value, pass_value)
+            result = await asyncio.to_thread(
+                db_register, name=name_value, email=email_value, password=pass_value
+            )
 
             set_success(user.text["login"]["success_register"])
 
             await user.save_logged(result)
 
-            ft.context.page.navigate("/")
+            go_to_home()
 
         except AuthApiError as e:
             if re.fullmatch(e.message, "User already registered"):
@@ -159,37 +150,51 @@ def RegisterPage():
             set_loading(False)
 
     return ft.Column(
+        expand=True,
         spacing=20,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         controls=[
             SubTitle(user.text["login"]["register"]),
-            InputText(
-                label=user.text["login"]["email"],
-                placeholder="email@email.com",
-                ref=email_ref,
-                valid_data=set_email_valid,
-                filter=ft.InputFilter(NO_SPACE, allow=False),
-                validate_regex=EMAIL_FORMAT,
-                error_message=user.text["unvalid_field_messages"]["email_error"],
+            ft.Column(
+                expand=True,
+                controls=[
+                    InputText(
+                        label=user.text["login"]["name"], set_input_data=set_name_value
+                    ),
+                    InputText(
+                        label=user.text["login"]["email"],
+                        placeholder="email@email.com",
+                        set_input_data=set_email_value,
+                        filter=ft.InputFilter(NO_SPACE, allow=False),
+                        validate_regex=EMAIL_FORMAT,
+                        error_message=user.text["unvalid_field_messages"][
+                            "email_error"
+                        ],
+                    ),
+                    InputPass(
+                        label=user.text["login"]["pass"],
+                        set_input_pass=set_pass_value,
+                        check_label=user.text["login"]["check_pass"],
+                        message_unvalid=user.text["unvalid_field_messages"][
+                            "unvalid_password"
+                        ],
+                        message_unmatch=user.text["unvalid_field_messages"][
+                            "unmatch_password"
+                        ],
+                    ),
+                    SuccessWrongText(wrong=wrong_register, success=success_register),
+                ],
+                scroll=ft.Scrollbar(),
             ),
-            InputPass(
-                label=user.text["login"]["pass"],
-                ref=pass_ref,
-                valid_data=set_pass_valid,
-                check_label=user.text["login"]["check_pass"],
-                message_unvalid=user.text["unvalid_field_messages"]["unvalid_password"],
-                message_unmatch=user.text["unvalid_field_messages"]["unmatch_password"],
-            ),
-            SuccessWrongText(wrong=wrong_register, success=success_register),
             FormButton(
                 label=user.text["login"]["sign_up_button"],
-                is_enabled=is_email_valid and is_pass_valid,
+                is_enabled=bool(email_value) and bool(pass_value) and bool(name_value),
                 on_click=sign_up,
                 loading=loading,
             ),
             ft.TextButton(
                 content=user.text["login"]["sign_in_link"],
-                on_click=lambda: ft.context.page.navigate("/auth/login"),
+                on_click=lambda: go_to_login(),
                 style=ft.ButtonStyle(color=ft.Colors.BLUE_500),
             ),
         ],
