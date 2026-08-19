@@ -1,20 +1,15 @@
-from datetime import date
-
 import flet as ft
 
+from config.patient_config import PatientContext
 from config.user_config import UserContext
 from database.select import PatientDataDict, patient_by_id
-from logic.general import calc_age
-from ui.components.buttons import IconTextButton
-from ui.components.show import (
-    BlockData,
-    ErrorText,
-    Loading,
-    NormalData,
-    NormalText,
-    PageTitle,
-)
+from ui.components.buttons.icon import IconTextButton
+from ui.components.show.data import BlockData, NormalData
+from ui.components.show.error_text import ErrorText
+from ui.components.show.text import NormalText
+from ui.components.show.title import PageTitle
 from ui.components.view import MainAppbar, MainView
+from ui.components.waiting import LoadingRing
 from ui.go_to import go_to_home, go_to_patients, got_to_patient_new_data
 
 
@@ -22,25 +17,13 @@ from ui.go_to import go_to_home, go_to_patients, got_to_patient_new_data
 def PatientDataPage():
 
     user = ft.use_context(UserContext)
+    patient = ft.use_context(PatientContext)
     params = ft.use_route_params()
-    mobile = (
-        True
-        if ft.context.page.platform is None
-        else ft.context.page.platform.is_mobile()
-    )
-
-    default_main_data = {
-        "name": user.text["patient_data"]["default_name"],
-        "lastname": "",
-        "age": "",
-        "sex": "",
-    }
 
     default_exam = {"date": "", "exam": ""}
 
     default_disease = {"date": "", "disease": ""}
 
-    patient_main_data, set_main_data = ft.use_state(default_main_data)
     patient_exam, set_exam = ft.use_state(default_exam)
     patient_disease, set_disease = ft.use_state(default_disease)
 
@@ -55,14 +38,13 @@ def PatientDataPage():
                 go_to_home()
                 return
 
-            set_main_data(
-                {
-                    "name": data["name"],
-                    "lastname": data["lastname"],
-                    "age": calc_age(date.fromisoformat(str(data["birth"]))),
-                    "sex": data["sex"],
-                }
+            patient.update_data(
+                name=data["name"],
+                lastname=data["lastname"],
+                birth=data["birth"],
+                sex=data["sex"],
             )
+
             if data["patient_exams"]:
                 exam = data["patient_exams"][0]
                 set_exam({"date": exam["date"], "exam": exam["exam"]})
@@ -82,22 +64,27 @@ def PatientDataPage():
 
         controls: list[ft.Control] = [
             NormalData(
-                user.text["patient_data"]["fullname"],
-                f"{patient_main_data['name']} {patient_main_data['lastname']}",
+                label=user.text["patient_data"]["fullname"],
+                data=f"{patient.name} {patient.lastname}",
             ),
             NormalData(
-                user.text["patient_data"]["age"],
-                patient_main_data["age"],
+                label=user.text["data"]["age"],
+                data=str(patient.age),
+                unit=user.text["general"]["age_unit"],
             ),
             NormalData(
-                user.text["patient_data"]["sex"],
-                user.text["data"]["sex_m"]
-                if patient_main_data["sex"] == "m"
+                label=user.text["data"]["sex"],
+                data=user.text["data"]["sex_m"]
+                if patient.sex == "m"
                 else user.text["data"]["sex_f"],
             ),
         ]
 
-        return ft.Column(controls=controls) if mobile else ft.Row(controls=controls)
+        return (
+            ft.Column(controls=controls)
+            if user.is_mobile
+            else ft.Row(controls=controls)
+        )
 
     def potential():
         return
@@ -124,7 +111,7 @@ def PatientDataPage():
 
     return MainView(
         path=ft.use_view_path(),
-        appbar=MainAppbar(title=patient_main_data["name"], back=go_to_patients),
+        appbar=MainAppbar(title=patient.name, back=go_to_patients),
         controls=[
             ft.Container(
                 expand=True,
@@ -132,10 +119,10 @@ def PatientDataPage():
                     expand=True,
                     controls=[
                         PageTitle(
-                            f"{user.text['patient_data']['title']} {patient_main_data['name']} {patient_main_data['lastname']}"
+                            f"{user.text['patient_data']['title']} {patient.name} {patient.lastname}"
                         ),
                         ErrorText(error=error),
-                        Loading(
+                        LoadingRing(
                             text=user.text["patient_data"]["loading"],
                             is_loading=loading,
                         ),

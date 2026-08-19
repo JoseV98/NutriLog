@@ -30,9 +30,16 @@
     "new": "Nuevo Paciente",
     "log": "Registros"
   },
+  "placeholder": {
+    "pass": "********",
+    "number": "0.00",
+    "big_number": "00.00",
+    "email": "email@email.com"
+  },
   "general": {
-    "number_placeholder": "0.00",
-    "toggle": "Mostrar"
+    "toggle": "Mostrar",
+    "age_unit": "Años",
+    "equation": "Ecuación"
   },
   "home": {
     "appbar_title": "Inicio",
@@ -43,13 +50,9 @@
   },
   "new_patient": {
     "title": "Datos del Nuevo Paciente",
-    "name": "Nombre del Paciente",
-    "lastname": "Apellido del Paciente",
     "birthday": "Fecha de Nacimiento",
     "sex": "Sexo del Paciente",
     "potential": "¿Guardar Potencial Genético?",
-    "mother": "Talla Madre (m)",
-    "father": "Talla Padre (m)",
     "is_disease": "¿Enfermedades?",
     "disease": "Registro de emfermedades del paciente",
     "is_exam": "¿Examenes?",
@@ -60,13 +63,41 @@
     "appbar_title": "Pacientes",
     "title": "Lista de Pacientes",
     "no_patients": "No hay Pacientes",
+    "loading": "Cargando lista de pacientes"
+  },
+  "data": {
+    "date": "Fecha del Registro",
     "name": "Nombre",
     "lastname": "Apellido",
     "age": "Edad",
     "sex": "Sexo",
-    "loading": "Cargando lista de pacientes"
-  },
-  "data": {
+    "mother": "Talla Madre",
+    "father": "Talla Padre",
+    "weight": "Peso",
+    "height": "Altura",
+    "ideal_weight": "Peso Ideal",
+    "bmi": {
+      "text": "Indice de Masa Corporal",
+      "text_mobile": "IMC",
+      "classification": "Clasificación de IMC",
+      "l": "Bajo Peso",
+      "n": "Peso Normal",
+      "h": "Sobrepeso",
+      "vh": "Obesidad"
+    },
+    "bmr": {
+      "text": "Tasa Metabolica Basal",
+      "minor": "El paciente tiene que ser mayor de edad"
+    },
+    "subcutaneous_folds": "Pliegues Subcutaneos",
+    "subscumular": "Subescupular",
+    "tricipital": "Tricipital",
+    "bicipital": "Bicipital",
+    "iliocrestal": "Iliocrestal",
+    "supraspinal": "Supraespinal",
+    "Abdominal": "Abdominal",
+    "anterior_thigh": "Muslo Anterior",
+    "calf": "Pantorrilla",
     "sex_m": "Masculino",
     "sex_f": "Femenino"
   },
@@ -79,8 +110,6 @@
     "add_report": "Nuevo reporte",
     "main_data": "Datos Basicos",
     "fullname": "Nombre Completo",
-    "age": "Edad",
-    "sex": "Sexo",
     "exam": "Ultimo Reporte Médico Registrado.\nFecha:",
     "disease": "Ultimo Reporte de Enfermedad Registrado.\nFecha:"
   },

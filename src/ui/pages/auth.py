@@ -7,9 +7,12 @@ from supabase import AuthApiError
 from config.constants import COLORS, EMAIL_FORMAT, NO_SPACE
 from config.user_config import UserContext
 from database.connect import db_login, db_register
-from ui.components.buttons import FormButton
-from ui.components.input import InputPass, InputText
-from ui.components.show import SuccessWrongText
+from ui.components.buttons.form import FormButton
+from ui.components.container.box import RoundedBox
+from ui.components.container.column import NormalColumn, ScrollColumn
+from ui.components.input.input_password import InputPass
+from ui.components.input.input_text import InputText
+from ui.components.show.success_or_wrong import SuccessWrongText
 from ui.components.text import SubTitle, Title
 from ui.go_to import go_to_home, go_to_login, go_to_register
 
@@ -22,23 +25,9 @@ def SignLayout():
     return ft.View(
         route=ft.use_view_path(),
         controls=[
-            ft.Container(
-                expand=True,
-                padding=50,
-                bgcolor=ft.Colors.WHITE,
-                border_radius=10,
-                shadow=ft.BoxShadow(
-                    spread_radius=1,
-                    blur_radius=15,
-                    color=ft.Colors.GREY_300,
-                ),
-                content=ft.Column(
-                    expand=True,
-                    spacing=20,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                    controls=[Title(user.text["login"]["title"]), outlet],
-                ),
-            )
+            RoundedBox(
+                NormalColumn(controls=[Title(user.text["login"]["title"]), outlet])
+            ),
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         vertical_alignment=ft.MainAxisAlignment.CENTER,
@@ -82,14 +71,12 @@ def LoginPage():
         finally:
             set_loading(False)
 
-    return ft.Column(
-        spacing=20,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+    return ScrollColumn(
         controls=[
             SubTitle(user.text["login"]["login"]),
             InputText(
                 label=user.text["login"]["email"],
-                placeholder="email@email.com",
+                placeholder=user.text["placeholder"]["email"],
                 set_input_data=set_email_value,
                 filter=ft.InputFilter(NO_SPACE, allow=False),
                 validate_regex=EMAIL_FORMAT,
@@ -155,8 +142,7 @@ def RegisterPage():
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         controls=[
             SubTitle(user.text["login"]["register"]),
-            ft.Column(
-                expand=True,
+            ScrollColumn(
                 controls=[
                     InputText(
                         label=user.text["login"]["name"], set_input_data=set_name_value
@@ -184,7 +170,6 @@ def RegisterPage():
                     ),
                     SuccessWrongText(wrong=wrong_register, success=success_register),
                 ],
-                scroll=ft.Scrollbar(),
             ),
             FormButton(
                 label=user.text["login"]["sign_up_button"],

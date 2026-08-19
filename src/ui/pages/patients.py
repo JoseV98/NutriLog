@@ -7,15 +7,12 @@ from config.constants import COLORS
 from config.user_config import UserContext
 from database.select import patients
 from logic.general import calc_age
-from ui.components.show import (
-    EmptyData,
-    ErrorText,
-    Loading,
-    NormalText,
-    PageTitle,
-    TableTitle,
-)
+from ui.components.show.empty import EmptyData
+from ui.components.show.error_text import ErrorText
+from ui.components.show.title import PageTitle
+from ui.components.table.title import TableTitle
 from ui.components.view import MainAppbar, MainView
+from ui.components.waiting import LoadingRing
 from ui.go_to import go_to_patient
 
 
@@ -87,7 +84,7 @@ def AllPatients():
                 content=ft.Column(
                     controls=[
                         PageTitle(user.text["patients"]["title"]),
-                        Loading(
+                        LoadingRing(
                             text=user.text["patients"]["loading"],
                             is_loading=loading,
                         ),
@@ -102,13 +99,10 @@ def AllPatients():
                                 sort_ascending=True,
                                 bottom_margin=10,
                                 columns=[
-                                    DataColumn(user.text["patients"]["lastname"]),
-                                    DataColumn(user.text["patients"]["name"]),
-                                    DataColumn(
-                                        user.text["patients"]["age"],
-                                        numeric=True,
-                                    ),
-                                    DataColumn(user.text["patients"]["sex"]),
+                                    DataColumn(user.text["data"]["lastname"]),
+                                    DataColumn(user.text["data"]["name"]),
+                                    DataColumn(user.text["data"]["age"], numeric=True),
+                                    DataColumn(user.text["data"]["sex"]),
                                 ],
                                 rows=table_data,
                             ),

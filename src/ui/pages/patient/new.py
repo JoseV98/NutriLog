@@ -4,15 +4,14 @@ from config.constants import COLORS
 from config.user_config import UserContext
 from database.insert import new_patient
 from logic.general import calc_age
-from ui.components.buttons import FormButton
-from ui.components.input import (
-    InputDate,
-    InputFloat,
-    InputMultiLineText,
-    InputText,
-    SimpleSwitch,
-)
-from ui.components.show import ErrorText, PageTitle
+from ui.components.buttons.form import FormButton
+from ui.components.buttons.simple_switch import SimpleSwitch
+from ui.components.input.input_date import InputDate
+from ui.components.input.input_float import InputFloat
+from ui.components.input.input_multiline import InputMultiLineText
+from ui.components.input.input_text import InputText
+from ui.components.show.error_text import ErrorText
+from ui.components.show.title import PageTitle
 from ui.components.view import MainAppbar, MainView
 from ui.go_to import go_to_patient
 from ui.styles.texts import NORMAL
@@ -107,13 +106,11 @@ def NewPatient():
                                         expand=True,
                                         controls=[
                                             InputText(
-                                                label=user.text["new_patient"]["name"],
+                                                label=user.text["data"]["name"],
                                                 set_input_data=set_name,
                                             ),
                                             InputText(
-                                                label=user.text["new_patient"][
-                                                    "lastname"
-                                                ],
+                                                label=user.text["data"]["lastname"],
                                                 set_input_data=set_last_name,
                                             ),
                                             InputDate(
@@ -127,7 +124,7 @@ def NewPatient():
                                     ft.Row(
                                         controls=[
                                             ft.Text(
-                                                user.text["new_patient"]["sex"],
+                                                user.text["data"]["sex"],
                                                 color=COLORS.text,
                                             ),
                                             ft.RadioGroup(
@@ -161,20 +158,18 @@ def NewPatient():
                                         on_change_data=set_potential,
                                     ),
                                     InputFloat(
-                                        label=user.text["new_patient"]["mother"],
+                                        label=user.text["data"]["mother"],
                                         set_input_data=set_mother_height,
-                                        placeholder=user.text["general"][
-                                            "number_placeholder"
-                                        ],
+                                        placeholder=user.text["placeholder"]["number"],
+                                        unit="m",
                                         empty_valid=True,
                                         visible=genetic_potential,
                                     ),
                                     InputFloat(
-                                        label=user.text["new_patient"]["father"],
+                                        label=user.text["data"]["father"],
                                         set_input_data=set_father_height,
-                                        placeholder=user.text["general"][
-                                            "number_placeholder"
-                                        ],
+                                        placeholder=user.text["placeholder"]["number"],
+                                        unit="m",
                                         empty_valid=True,
                                         visible=genetic_potential,
                                     ),

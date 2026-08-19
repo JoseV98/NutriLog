@@ -2,8 +2,8 @@ import flet as ft
 
 from config.constants import COLORS
 from config.user_config import UserContext
-from ui.components.buttons import HomePageButton
-from ui.components.show import PageTitle
+from ui.components.buttons.home import HomePageButton
+from ui.components.show.title import PageTitle
 from ui.components.view import MainAppbar, MainView
 from ui.go_to import go_to_login, go_to_new_patient, go_to_patients
 
@@ -13,10 +13,11 @@ def HomePage():
 
     user = ft.use_context(UserContext)
 
-    @ft.use_effect
     def check_login():
         if not user.logged:
             go_to_login()
+
+    ft.use_effect(setup=check_login, dependencies=[])
 
     return MainView(
         path="/",

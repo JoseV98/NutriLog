@@ -22,21 +22,27 @@ class User:
         self.db_auth_expiration: datetime
         self.app_width: int
         self.app_height: int
+        self.is_mobile: bool | None = None
 
     async def check_login(self):
 
-        token_session = await STORAGE.get_value("session")
+        if self.is_mobile is None:
+            platform = ft.context.page.platform
+            if platform is not None:
+                self.is_mobile = platform.is_mobile()
 
-        if token_session:
-            try:
-                session: Session | None = refresh_session(token_session)
-                if session:
-                    await self.save_logged(session)
-                    return
-                else:
-                    await STORAGE.remove_value("session")
-            except Exception:
-                await STORAGE.remove_value("session")
+        # token_session = await STORAGE.get_value("session")
+        #
+        # if token_session:
+        #     try:
+        #         session: Session | None = refresh_session(token_session)
+        #         if session:
+        #             await self.save_logged(session)
+        #             return
+        #         else:
+        #             await STORAGE.remove_value("session")
+        #     except Exception:
+        #         await STORAGE.remove_value("session")
 
         self.logged = False
 

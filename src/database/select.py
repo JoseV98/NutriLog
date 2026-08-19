@@ -54,10 +54,10 @@ async def patient_old_data(idpatient: str) -> PatientDataDict | None:
 
     response = await asyncio.to_thread(
         lambda: (
-            CLIENT.table("patient_measures")
+            CLIENT.table("patients")
             .select(
                 "*",
-                "patient!inner(*)",
+                "patient_measures!left(*)",
             )
             .eq("idpatient", idpatient)
             .is_("active", True)
