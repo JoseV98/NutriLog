@@ -36,6 +36,25 @@ ALL_OR_HALF: dict = {
     ft.ResponsiveRowBreakpoint.XXL: 6,
 }
 
+THREE_QUARTER: dict = {
+    ft.ResponsiveRowBreakpoint.XS: 12,
+    ft.ResponsiveRowBreakpoint.SM: 12,
+    ft.ResponsiveRowBreakpoint.MD: 12,
+    ft.ResponsiveRowBreakpoint.LG: 8,
+    ft.ResponsiveRowBreakpoint.XL: 8,
+    ft.ResponsiveRowBreakpoint.XXL: 8,
+}
+
+ONE_QUARTER: dict = {
+    ft.ResponsiveRowBreakpoint.XS: 12,
+    ft.ResponsiveRowBreakpoint.SM: 12,
+    ft.ResponsiveRowBreakpoint.MD: 12,
+    ft.ResponsiveRowBreakpoint.LG: 4,
+    ft.ResponsiveRowBreakpoint.XL: 4,
+    ft.ResponsiveRowBreakpoint.XXL: 4,
+}
+
+
 ALL: dict = {
     ft.ResponsiveRowBreakpoint.XS: 12,
     ft.ResponsiveRowBreakpoint.SM: 12,

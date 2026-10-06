@@ -1,25 +1,31 @@
 import flet as ft
 
+from config.user_config import UserContext
+from ui.colors.palette import COLORS
+from ui.components.container import NormalColumn
+from ui.components.figures.loading_ring import LoadingRing
+from ui.components.text.title import ViewTitle
+from ui.components.view import CenterView
+
 
 @ft.component
 def LoadingView():
-    return ft.View(
-        route="/loading",
-        appbar=ft.AppBar(title=ft.Text("Cargando...")),
-        controls=[
-            ft.Container(
-                content=ft.Column(
-                    [
-                        ft.ProgressRing(),
-                        ft.Text("Cargando datos, por favor espera..."),
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+    user = ft.use_context(UserContext)
+    app_height = user.get_height()
+    bg_color = COLORS.background
+
+    return CenterView(
+        path="/loading",
+        bg_color=bg_color,
+        content=NormalColumn(
+            controls=[
+                ViewTitle(
+                    text="NutriLog",
+                    text_color=COLORS.main,
+                    bg_color=bg_color,
+                    app_height=app_height,
                 ),
-                alignment=ft.Alignment.CENTER,
-                expand=True,
-            )
-        ],
-        vertical_alignment=ft.MainAxisAlignment.CENTER,
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                LoadingRing(app_height * 0.1),
+            ]
+        ),
     )

@@ -1,9 +1,8 @@
-import json
 import os
+from dataclasses import dataclass
+from pathlib import Path
 
 from dotenv import load_dotenv
-from pathlib import Path
-from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
@@ -25,31 +24,4 @@ class DatabaseConst:
     KEY: str = os.getenv("DATABASE_KEY", "")
 
 
-@dataclass(frozen=True)
-class WebKey:
-    PUBLIC: str = os.getenv("WEB_PUBLIC_KEY", "")
-    WRAP_KEY: str = os.getenv("WEB_WRAP_KEY", "")
-    WRAP_KEY_IV: str = os.getenv("WEB_WRAP_KEY_IV", "")
-
-
-@dataclass(frozen=True)
-class Colors:
-    with open(PATHS.APP_ASSETS / "colors.json", "r", encoding="utf-8") as colors:
-        palette = json.load(colors)
-    main = palette["main"]
-    sec = palette["secundary"]
-    aux_1 = palette["auxiliary"]
-    aux_2 = palette["auxiliary2"]
-    aux_3 = palette["auxiliary3"]
-    ctrs = palette["contrast"]
-    text = palette["main_text"]
-
-
-COLORS = Colors()
 DB = DatabaseConst()
-
-# Regex
-NO_SPACE = r"^\S*$"
-EMAIL_FORMAT = r"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-NUMERIC_FORMAT = r"^(?:[0-9]+(?:\.[0-9]+)?)?$"
-NUMERIC_VALUE = r"^[0-9\.]*$"
