@@ -2,7 +2,7 @@ import os
 import flet as ft
 
 from config.constants import PATHS
-from config.storage import STORAGE, create_storage
+from config.storage import STORAGE
 
 from ui.router import AppRouter
 
@@ -13,8 +13,6 @@ async def main(app: ft.Page):
     app.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     app.theme_mode = ft.ThemeMode.SYSTEM
     app.title = "NutriLog"
-    storage = create_storage()
-    STORAGE.storage = storage
 
     if isinstance(app.platform, ft.PagePlatform) and app.platform.is_desktop():
         monitor_height = 1080
@@ -47,7 +45,6 @@ async def main(app: ft.Page):
         app.window.width = min_width
 
         app.window.aspect_ratio = aspect_ratio
-
         if app.platform == ft.PagePlatform.WINDOWS:
             app.window.icon = os.fspath(PATHS.APP_ASSETS / "icon.ico")
 

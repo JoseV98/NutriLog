@@ -1,56 +1,48 @@
-import flet_secure_storage as fss
+import secrets
+
 import flet as ft
-
-from config.constants import WebKey
-
-StorageContext: ft.ContextProvider[fss.SecureStorage | None] = ft.create_context(None)
+from flet.security import encrypt, decrypt
+from pydantic import Base64Encoder
 
 
-def create_storage() -> fss.SecureStorage:
-    web_key = WebKey()
-    return fss.SecureStorage(
-        web_options=fss.WebOptions(
-            db_name="NutriLog_storage",
-            public_key=web_key.PUBLIC,
-            wrap_key=web_key.WRAP_KEY,
-            wrap_key_iv=web_key.WRAP_KEY_IV,
-        ),
-        android_options=fss.AndroidOptions(
-            reset_on_error=True,
-            migrate_on_algorithm_change=True,
-            key_cipher_algorithm=fss.KeyCipherAlgorithm.AES_GCM_NO_PADDING,
-            storage_cipher_algorithm=fss.StorageCipherAlgorithm.AES_GCM_NO_PADDING,
-        ),
-        ios_options=fss.IOSOptions(
-            accessibility=fss.KeychainAccessibility.FIRST_UNLOCK
-        ),
-    )
+STORAGE_KEY = "storage_key"
 
 
 class Storage:
-    storage: fss.SecureStorage
+    async def storage_key(self) -> str:
 
-    async def set_value(self, key, value):
-        try:
-            await self.storage.set(key=key, value=value)
-        except RuntimeError as e:
-            if "Session closed" not in str(e):
-                raise
+        storage_key = await ft.SharedPreferences().get(STORAGE_KEY)
 
-    async def get_value(self, key):
-        try:
-            return await self.storage.get(key=key)
-        except RuntimeError as e:
-            if "Session closed" in str(e):
+        if storage_key is None:
+            raw_key = secrets.token_bytes(32)
+            encoded_key = Base64Encoder.encode(raw_key).decode("utf-8")
+            await ft.SharedPreferences().set(STORAGE_KEY, encoded_key)
+            return encoded_key
+
+        return str(storage_key)
+
+    async def set_value(self, key: str, value: str):
+
+        storage_key = await self.storage_key()
+
+        await ft.SharedPreferences().set(key=key, value=encrypt(value, storage_key))
+
+    async def get_value(self, key: str) -> str | None:
+        storage_key = await self.storage_key()
+        data = await ft.SharedPreferences().get(key=key)
+
+        if data is not None:
+            try:
+                return decrypt(str(data), storage_key)
+
+            except Exception:
                 return None
-            raise
 
-    async def remove_value(self, key):
-        try:
-            await self.storage.remove(key=key)
-        except RuntimeError as e:
-            if "Session closed" not in str(e):
-                raise
+        return None
+
+    async def remove_value(self, key: str):
+
+        await ft.SharedPreferences().remove(key=key)
 
 
 STORAGE = Storage()
